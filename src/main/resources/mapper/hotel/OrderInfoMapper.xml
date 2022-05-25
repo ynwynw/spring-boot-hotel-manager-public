@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.hotel.dao.OrderInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hotel.modular.hotel.model.OrderInfo" >
+    <id column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="room_type_id" property="roomTypeId" jdbcType="INTEGER" />
+    <result column="room_type" property="roomType" jdbcType="VARCHAR" />
+    <result column="order_date" property="orderDate" jdbcType="DATE" />
+    <result column="order_days" property="orderDays" jdbcType="INTEGER" />
+    <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+    <result column="order_cost" property="orderCost" jdbcType="DOUBLE" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, name, phone, room_type_id, room_type, order_date, order_days, order_status, 
+    order_cost, user_id, idcard
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from order_info
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order_info
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.example.hotel.modular.hotel.model.OrderInfo" >
+    insert into order_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="roomTypeId != null" >
+        room_type_id,
+      </if>
+      <if test="roomType != null" >
+        room_type,
+      </if>
+      <if test="orderDate != null" >
+        order_date,
+      </if>
+      <if test="orderDays != null" >
+        order_days,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderCost != null" >
+        order_cost,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="roomTypeId != null" >
+        #{roomTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="roomType != null" >
+        #{roomType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null" >
+        #{orderDate,jdbcType=DATE},
+      </if>
+      <if test="orderDays != null" >
+        #{orderDays,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderCost != null" >
+        #{orderCost,jdbcType=DOUBLE},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.hotel.model.OrderInfo" >
+    update order_info
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="roomTypeId != null" >
+        room_type_id = #{roomTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="roomType != null" >
+        room_type = #{roomType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null" >
+        order_date = #{orderDate,jdbcType=DATE},
+      </if>
+      <if test="orderDays != null" >
+        order_days = #{orderDays,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderCost != null" >
+        order_cost = #{orderCost,jdbcType=DOUBLE},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectOrderInfoList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from order_info
+    where user_id=#{userId,jdbcType=INTEGER}
+  </select>
+    <select id="selectOrderInfoListByMap" resultMap="BaseResultMap" parameterType="Map">
+      select
+      <include refid="Base_Column_List" />
+      from order_info
+      <if test="start!=null and size!=null">
+        limit #{start}, #{size}
+      </if>
+    </select>
+  <select id="getTotalOrderInfo" resultType="java.lang.Integer" parameterType="Map">
+     select count(*) from order_info
+  </select>
+
+  <select id="selectOrderInfoByNameAndPhone" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from order_info
+    where name = #{name,jdbcType=VARCHAR}
+    and phone=#{phone,jdbcType=VARCHAR}
+  </select>
+</mapper>

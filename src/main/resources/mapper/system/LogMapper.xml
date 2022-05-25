@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.system.dao.LogMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hotel.modular.system.model.Log" >
+    <id column="log_id" property="logId" jdbcType="INTEGER" />
+    <result column="log_user_name" property="logUserName" jdbcType="VARCHAR" />
+    <result column="log_user_role" property="logUserRole" jdbcType="VARCHAR" />
+    <result column="log_operate_content" property="logOperateContent" jdbcType="VARCHAR" />
+    <result column="log_ip_address" property="logIpAddress" jdbcType="VARCHAR" />
+    <result column="log_ip_location" property="logIpLocation" jdbcType="VARCHAR" />
+    <result column="log_system_type" property="logSystemType" jdbcType="VARCHAR" />
+    <result column="log_browser_type" property="logBrowserType" jdbcType="VARCHAR" />
+    <result column="log_create_time" property="logCreateTime" jdbcType="TIMESTAMP" />
+    <result column="log_note" property="logNote" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    log_id, log_user_name, log_user_role, log_operate_content, log_ip_address, log_ip_location, 
+    log_system_type, log_browser_type, log_create_time, log_note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from log
+    where log_id = #{logId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from log
+    where log_id = #{logId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hotel.modular.system.model.Log" >
+    insert into log (log_id, log_user_name, log_user_role, 
+      log_operate_content, log_ip_address, log_ip_location, 
+      log_system_type, log_browser_type, log_create_time, 
+      log_note)
+    values (#{logId,jdbcType=INTEGER}, #{logUserName,jdbcType=VARCHAR}, #{logUserRole,jdbcType=VARCHAR}, 
+      #{logOperateContent,jdbcType=VARCHAR}, #{logIpAddress,jdbcType=VARCHAR}, #{logIpLocation,jdbcType=VARCHAR}, 
+      #{logSystemType,jdbcType=VARCHAR}, #{logBrowserType,jdbcType=VARCHAR}, #{logCreateTime,jdbcType=TIMESTAMP}, 
+      #{logNote,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hotel.modular.system.model.Log" >
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        log_id,
+      </if>
+      <if test="logUserName != null" >
+        log_user_name,
+      </if>
+      <if test="logUserRole != null" >
+        log_user_role,
+      </if>
+      <if test="logOperateContent != null" >
+        log_operate_content,
+      </if>
+      <if test="logIpAddress != null" >
+        log_ip_address,
+      </if>
+      <if test="logIpLocation != null" >
+        log_ip_location,
+      </if>
+      <if test="logSystemType != null" >
+        log_system_type,
+      </if>
+      <if test="logBrowserType != null" >
+        log_browser_type,
+      </if>
+        log_create_time,
+      <if test="logNote != null" >
+        log_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logId != null" >
+        #{logId,jdbcType=INTEGER},
+      </if>
+      <if test="logUserName != null" >
+        #{logUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="logUserRole != null" >
+        #{logUserRole,jdbcType=VARCHAR},
+      </if>
+      <if test="logOperateContent != null" >
+        #{logOperateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="logIpAddress != null" >
+        #{logIpAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="logIpLocation != null" >
+        #{logIpLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="logSystemType != null" >
+        #{logSystemType,jdbcType=VARCHAR},
+      </if>
+      <if test="logBrowserType != null" >
+        #{logBrowserType,jdbcType=VARCHAR},
+      </if>
+       now(),
+      <if test="logNote != null" >
+        #{logNote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.system.model.Log" >
+    update log
+    <set >
+      <if test="logUserName != null" >
+        log_user_name = #{logUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="logUserRole != null" >
+        log_user_role = #{logUserRole,jdbcType=VARCHAR},
+      </if>
+      <if test="logOperateContent != null" >
+        log_operate_content = #{logOperateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="logIpAddress != null" >
+        log_ip_address = #{logIpAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="logIpLocation != null" >
+        log_ip_location = #{logIpLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="logSystemType != null" >
+        log_system_type = #{logSystemType,jdbcType=VARCHAR},
+      </if>
+      <if test="logBrowserType != null" >
+        log_browser_type = #{logBrowserType,jdbcType=VARCHAR},
+      </if>
+      <if test="logCreateTime != null" >
+        log_create_time = #{logCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logNote != null" >
+        log_note = #{logNote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hotel.modular.system.model.Log" >
+    update log
+    set log_user_name = #{logUserName,jdbcType=VARCHAR},
+      log_user_role = #{logUserRole,jdbcType=VARCHAR},
+      log_operate_content = #{logOperateContent,jdbcType=VARCHAR},
+      log_ip_address = #{logIpAddress,jdbcType=VARCHAR},
+      log_ip_location = #{logIpLocation,jdbcType=VARCHAR},
+      log_system_type = #{logSystemType,jdbcType=VARCHAR},
+      log_browser_type = #{logBrowserType,jdbcType=VARCHAR},
+      log_create_time = #{logCreateTime,jdbcType=TIMESTAMP},
+      log_note = #{logNote,jdbcType=VARCHAR}
+    where log_id = #{logId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectLogList" resultMap="BaseResultMap" parameterType="Map">
+    select
+    <include refid="Base_Column_List" />
+    from log
+    <where>
+        <if test="logUserName != null and logUserName != ''">
+            log_user_name like #{logUserName}
+        </if>
+    </where>
+      order by log_create_time desc
+    <if test="start!=null and size!=null">
+      limit #{start}, #{size}
+    </if>
+
+  </select>
+
+  <select id="getTotalLog" resultType="java.lang.Integer" parameterType="Map">
+    select count(*)
+    from log
+      <where>
+          <if test="logUserName != null and logUserName != ''">
+              log_user_name like #{logUserName}
+          </if>
+      </where>
+  </select>
+</mapper>

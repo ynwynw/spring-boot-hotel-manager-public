@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.hotel.dao.CheckInMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hotel.modular.hotel.model.CheckIn" >
+    <id column="check_in_id" property="checkInId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="room_id" property="roomId" jdbcType="INTEGER" />
+    <result column="room_number" property="roomNumber" jdbcType="INTEGER" />
+    <result column="persons" property="persons" jdbcType="VARCHAR" />
+    <result column="ids" property="ids" jdbcType="VARCHAR" />
+    <result column="check_in_time" property="checkInTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    check_in_id, order_id, room_id, room_number, persons, ids, check_in_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from check_in
+    where check_in_id = #{checkInId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from check_in
+    where check_in_id = #{checkInId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteCheckIn" parameterType="java.lang.Integer">
+      delete from check_in
+    where order_id = #{orderId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.example.hotel.modular.hotel.model.CheckIn" >
+    insert into check_in
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="checkInId != null" >
+        check_in_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="roomId != null" >
+        room_id,
+      </if>
+      <if test="roomNumber != null" >
+        room_number,
+      </if>
+      <if test="persons != null" >
+        persons,
+      </if>
+      <if test="ids != null" >
+        ids,
+      </if>
+      <if test="checkInTime != null" >
+        check_in_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="checkInId != null" >
+        #{checkInId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null" >
+        #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="roomNumber != null" >
+        #{roomNumber,jdbcType=INTEGER},
+      </if>
+      <if test="persons != null" >
+        #{persons,jdbcType=VARCHAR},
+      </if>
+      <if test="ids != null" >
+        #{ids,jdbcType=VARCHAR},
+      </if>
+      <if test="checkInTime != null" >
+        #{checkInTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.hotel.model.CheckIn" >
+    update check_in
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="roomId != null" >
+        room_id = #{roomId,jdbcType=INTEGER},
+      </if>
+      <if test="roomNumber != null" >
+        room_number = #{roomNumber,jdbcType=INTEGER},
+      </if>
+      <if test="persons != null" >
+        persons = #{persons,jdbcType=VARCHAR},
+      </if>
+      <if test="ids != null" >
+        ids = #{ids,jdbcType=VARCHAR},
+      </if>
+      <if test="checkInTime != null" >
+        check_in_time = #{checkInTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where check_in_id = #{checkInId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectCheckInList" resultMap="BaseResultMap" parameterType="Map">
+    select
+    <include refid="Base_Column_List" />
+    from check_in
+    <if test="start!=null and size!=null">
+      limit #{start}, #{size}
+    </if>
+  </select>
+  <select id="getTotalCheckIn" resultType="java.lang.Integer" parameterType="Map">
+     select count(*) from check_in
+  </select>
+</mapper>

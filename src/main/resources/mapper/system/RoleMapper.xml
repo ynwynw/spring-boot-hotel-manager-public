@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.system.dao.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.example.hotel.modular.system.model.Role">
+        <id column="role_id" property="roleId" jdbcType="INTEGER"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="role_create_time" property="roleCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="role_last_modify_time" property="roleLastModifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        role_id,
+        role_name,
+        role_create_time,
+        role_last_modify_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </select>
+    <select id="countByRoleName" parameterType="map" resultType="java.lang.Integer">
+        select count(1)
+        from role
+        where role_name=#{roleName,jdbcType=VARCHAR}
+        <if test="roleId != null">
+            AND role_id != #{roleId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from role
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+
+
+    <insert id="insertSelective" parameterType="com.example.hotel.modular.system.model.Role">
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+            role_create_time,
+            role_last_modify_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            now(),
+            now()
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.system.model.Role">
+        update role
+        <set>
+            <if test="roleName != null">
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleCreateTime != null">
+                role_create_time = #{roleCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            role_last_modify_time = now(),
+        </set>
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </update>
+
+
+    <delete id="deleteRoleUserRsByUserId">
+        delete
+        from role_user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteRoleUserRsByRoleId">
+        delete
+        from role_user
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="selectRoleList" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="Base_Column_List" />
+        from role
+        <where>
+            <if test="roleName != null and roleName != ''">
+                role_name like #{roleName}
+            </if>
+        </where>
+        <if test="start!=null and size!=null">
+            limit #{start}, #{size}
+        </if>
+
+    </select>
+
+    <select id="getTotalRole" resultType="java.lang.Integer" parameterType="Map">
+        select count(*)
+        from role
+        <where>
+        <if test="roleName != null and roleName != ''">
+            role_name like #{roleName}
+        </if>
+    </where>
+    </select>
+
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="Long">
+
+        select r.role_name
+        from user u,role r ,role_user ur
+        where ur.user_id = u.user_id
+        and ur.role_id = r.role_id
+        and u.user_id =#{userId}
+    </select>
+
+    <insert id="insertRolePermissions">
+        insert into role_permission ( role_id, permission_id ) values
+        <foreach collection="permissionIds" item="permissionId" separator=",">
+            ( #{roleId}, #{permissionId} )
+        </foreach>
+    </insert>
+</mapper>

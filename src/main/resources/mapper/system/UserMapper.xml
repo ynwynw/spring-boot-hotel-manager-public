@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.system.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hotel.modular.system.model.User" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_true_name" property="userTrueName" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="CHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_state" property="userState" jdbcType="INTEGER" />
+    <result column="user_create_time" property="userCreateTime" jdbcType="TIMESTAMP" />
+    <result column="user_last_modify_time" property="userLastModifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_name,user_true_name, user_password, user_phone, user_state, user_create_time,
+    user_last_modify_time
+  </sql>
+  <sql id="UserList_Column_List" >
+    user_id, user_name, user_true_name, user_phone, user_state, user_create_time,
+    user_last_modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.example.hotel.modular.system.model.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+        <if test="userTrueName != null" >
+            user_true_name,
+        </if>
+      <if test="userPassword != null" >
+        user_password,
+      </if>
+      <if test="userPhone != null" >
+        user_phone,
+      </if>
+        user_create_time,
+
+        user_last_modify_time,
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+        <if test="userTrueName != null" >
+            #{userTrueName,jdbcType=VARCHAR},
+        </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=CHAR},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      now(),
+      now()
+    </trim>
+  </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.system.model.User" >
+    update user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+        <if test="userTrueName != null" >
+            user_true_name = #{userTrueName,jdbcType=VARCHAR},
+        </if>
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=CHAR},
+      </if>
+
+      <if test="userPhone != null" >
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null" >
+        user_state = #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userCreateTime != null" >
+        user_create_time = #{userCreateTime,jdbcType=TIMESTAMP},
+      </if>
+        user_last_modify_time = now(),
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where user_name = #{userName,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectUserList" resultMap="BaseResultMap" parameterType="Map">
+    select
+     <include refid="UserList_Column_List" />
+    from user
+    <where>
+      <if test="userName != null and userName != ''">
+        user_name like #{userName}
+      </if>
+        <if test="userTrueName != null and userTrueName != ''">
+        and user_true_name like #{userTrueName}
+        </if>
+        <if test="userPhone != null and userPhone != ''">
+            and user_phone like #{userPhone}
+        </if>
+    </where>
+    <if test="start!=null and size!=null">
+      limit #{start}, #{size}
+    </if>
+  </select>
+
+    <select id="getTotalUser" resultType="java.lang.Integer" parameterType="Map">
+      select count(*) from user
+      <where>
+        <if test="userName != null and userName != ''">
+          user_name like #{userName}
+        </if>
+          <if test="userTrueName != null and userTrueName != ''">
+            and  user_true_name like #{userTrueName}
+          </if>
+          <if test="userPhone != null and userPhone != ''">
+              and user_phone like #{userPhone}
+          </if>
+      </where>
+    </select>
+
+    <select id="countByPhone" resultType="java.lang.Integer">
+      select count(1)
+      from user
+      where user_phone=#{userPhone,jdbcType=VARCHAR}
+      <if test="userId != null">
+      AND user_id != #{userId,jdbcType=BIGINT}
+      </if>
+    </select>
+    <select id="countByName" resultType="java.lang.Integer">
+      select count(1)
+      from user
+      where user_name=#{userName,jdbcType=VARCHAR}
+      <if test="userId != null">
+      AND user_id != #{userId,jdbcType=BIGINT}
+      </if>
+    </select>
+    <select id="countByUserId" resultType="java.lang.Integer">
+      select count(1)
+      from user
+      where user_id=#{userId,jdbcType=BIGINT}
+    </select>
+    <select id="countByUserTrueName" resultType="java.lang.Integer">
+      select count(1)
+      from user
+      where user_true_name=#{userTrueName,jdbcType=VARCHAR}
+      <if test="userId != null">
+        AND user_id != #{userId,jdbcType=BIGINT}
+      </if>
+    </select>
+
+
+    <insert id="insertUserRoles" parameterType="Map">
+    insert into role_user ( user_id, role_id ) values
+    <foreach collection="roleIds" item="roleId" separator=",">
+      ( #{userId}, #{roleId} )
+    </foreach>
+  </insert>
+</mapper>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.hotel.dao.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hotel.modular.hotel.model.Customer" >
+    <id column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="customer_login_name" property="customerLoginName" jdbcType="VARCHAR" />
+    <result column="customer_login_password" property="customerLoginPassword" jdbcType="CHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="customer_phone" property="customerPhone" jdbcType="VARCHAR" />
+    <result column="customer_card_number" property="customerCardNumber" jdbcType="VARCHAR" />
+    <result column="customer_create_time" property="customerCreateTime" jdbcType="TIMESTAMP" />
+    <result column="customer_last_modify_time" property="customerLastModifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    customer_id, customer_login_name, customer_login_password, customer_name, customer_phone, 
+    customer_card_number, customer_create_time, customer_last_modify_time
+  </sql>
+  <sql id="CustomerList_Column_List" >
+    customer_id, customer_login_name,  customer_name, customer_phone,
+    customer_card_number, customer_create_time, customer_last_modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where customer_id = #{customerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from customer
+    where customer_id = #{customerId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.example.hotel.modular.hotel.model.Customer" >
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="customerLoginName != null" >
+        customer_login_name,
+      </if>
+      <if test="customerLoginPassword != null" >
+        customer_login_password,
+      </if>
+      <if test="customerName != null" >
+        customer_name,
+      </if>
+      <if test="customerPhone != null" >
+        customer_phone,
+      </if>
+      <if test="customerCardNumber != null" >
+        customer_card_number,
+      </if>
+        customer_create_time,
+        customer_last_modify_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="customerId != null" >
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="customerLoginName != null" >
+        #{customerLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerLoginPassword != null" >
+        #{customerLoginPassword,jdbcType=CHAR},
+      </if>
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPhone != null" >
+        #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCardNumber != null" >
+        #{customerCardNumber,jdbcType=VARCHAR},
+      </if>
+      now(),
+      now()
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.hotel.model.Customer" >
+    update customer
+    <set >
+      <if test="customerLoginName != null" >
+        customer_login_name = #{customerLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerLoginPassword != null" >
+        customer_login_password = #{customerLoginPassword,jdbcType=CHAR},
+      </if>
+      <if test="customerName != null" >
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPhone != null" >
+        customer_phone = #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCardNumber != null" >
+        customer_card_number = #{customerCardNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCreateTime != null" >
+        customer_create_time = #{customerCreateTime,jdbcType=TIMESTAMP},
+      </if>
+
+        customer_last_modify_time = now(),
+
+    </set>
+    where customer_id = #{customerId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCustomerList" resultMap="BaseResultMap" parameterType="Map">
+    select
+    <include refid="CustomerList_Column_List" />
+    from customer
+    <where>
+      <if test="customerLoginName != null and customerLoginName != ''">
+        customer_login_name like #{customerLoginName}
+      </if>
+      <if test="customerName != null and customerName != ''">
+        and customer_name like #{customerName}
+      </if>
+      <if test="customerPhone != null and customerPhone != ''">
+        and customer_phone like #{customerPhone}
+      </if>
+    </where>
+    <if test="start!=null and size!=null">
+      limit #{start}, #{size}
+    </if>
+  </select>
+
+  <select id="getTotalCustomer" resultType="java.lang.Integer" parameterType="Map">
+    select count(*) from customer
+    <where>
+      <if test="customerLoginName != null and customerLoginName != ''">
+        customer_login_name like #{customerLoginName}
+      </if>
+      <if test="customerName != null and customerName != ''">
+        and customer_name like #{customerName}
+      </if>
+      <if test="customerPhone != null and customerPhone != ''">
+        and customer_phone like #{customerPhone}
+      </if>
+    </where>
+  </select>
+
+  <select id="countByPhone" resultType="java.lang.Integer">
+    select count(1)
+    from customer
+    where customer_phone=#{customerPhone,jdbcType=VARCHAR}
+    <if test="customerId != null">
+      AND customer_id != #{customerId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="countByLoginName" resultType="java.lang.Integer">
+    select count(1)
+    from customer
+    where customer_login_name=#{customerLoginName,jdbcType=VARCHAR}
+    <if test="customerId != null">
+      AND customer_id != #{customerId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectByCustomerLoginName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from customer
+    where customer_login_name = #{customerLoginName,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.system.dao.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.example.hotel.modular.system.model.Permission" >
+    <id column="permission_id" property="permissionId" jdbcType="INTEGER" />
+    <result column="permission_name" property="permissionName" jdbcType="VARCHAR" />
+    <result column="permission_url" property="permissionUrl" jdbcType="VARCHAR" />
+    <result column="permission_parent_id" property="permissionParentId" jdbcType="INTEGER" />
+    <result column="permission_icon" property="permissionIcon" jdbcType="VARCHAR" />
+    <result column="permission_create_time" property="permissionCreateTime" jdbcType="TIMESTAMP" />
+    <result column="permission_last_modify_time" property="permissionLastModifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    permission_id, permission_name, permission_url, permission_parent_id, permission_icon, 
+    permission_create_time, permission_last_modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert" parameterType="com.example.hotel.modular.system.model.Permission" >
+    insert into permission (permission_id, permission_name, permission_url, 
+      permission_parent_id, permission_icon, permission_create_time, 
+      permission_last_modify_time)
+    values (#{permissionId,jdbcType=INTEGER}, #{permissionName,jdbcType=VARCHAR}, #{permissionUrl,jdbcType=VARCHAR}, 
+      #{permissionParentId,jdbcType=INTEGER}, #{permissionIcon,jdbcType=VARCHAR}, #{permissionCreateTime,jdbcType=TIMESTAMP}, 
+      #{permissionLastModifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hotel.modular.system.model.Permission" >
+    insert into permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        permission_id,
+      </if>
+      <if test="permissionName != null" >
+        permission_name,
+      </if>
+      <if test="permissionUrl != null" >
+        permission_url,
+      </if>
+      <if test="permissionParentId != null" >
+        permission_parent_id,
+      </if>
+      <if test="permissionIcon != null" >
+        permission_icon,
+      </if>
+      <if test="permissionCreateTime != null" >
+        permission_create_time,
+      </if>
+      <if test="permissionLastModifyTime != null" >
+        permission_last_modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionName != null" >
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null" >
+        #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionParentId != null" >
+        #{permissionParentId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionIcon != null" >
+        #{permissionIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionCreateTime != null" >
+        #{permissionCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permissionLastModifyTime != null" >
+        #{permissionLastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.system.model.Permission" >
+    update permission
+    <set >
+      <if test="permissionName != null" >
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null" >
+        permission_url = #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionParentId != null" >
+        permission_parent_id = #{permissionParentId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionIcon != null" >
+        permission_icon = #{permissionIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionCreateTime != null" >
+        permission_create_time = #{permissionCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permissionLastModifyTime != null" >
+        permission_last_modify_time = #{permissionLastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hotel.modular.system.model.Permission" >
+    update permission
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      permission_url = #{permissionUrl,jdbcType=VARCHAR},
+      permission_parent_id = #{permissionParentId,jdbcType=INTEGER},
+      permission_icon = #{permissionIcon,jdbcType=VARCHAR},
+      permission_create_time = #{permissionCreateTime,jdbcType=TIMESTAMP},
+      permission_last_modify_time = #{permissionLastModifyTime,jdbcType=TIMESTAMP}
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="queryPermissionsByUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from permission
+    where permission_id in (
+      select
+        permission_id
+      from role_permission
+      where role_id in (
+        select
+          role_id
+        from role_user
+        where user_id = #{userId}
+      )
+    )
+  </select>
+
+  <select id="queryAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from permission
+  </select>
+
+    <delete id="deleteRolePermissionRsByRoleId">
+    delete from role_permission
+    where role_id=#{roleId}
+    </delete>
+
+    <select id="queryPermissionIdsByRoleId" resultType="java.lang.Integer">
+      select permission_id
+      from role_permission
+      where role_id = #{roleId}
+    </select>
+</mapper>

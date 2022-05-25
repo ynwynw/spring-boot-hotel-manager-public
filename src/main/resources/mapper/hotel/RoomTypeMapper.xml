@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.modular.hotel.dao.RoomTypeMapper">
+    <resultMap id="BaseResultMap" type="com.example.hotel.modular.hotel.model.RoomType">
+        <id column="type_id" property="typeId" jdbcType="INTEGER"/>
+        <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DOUBLE"/>
+        <result column="area" property="area" jdbcType="INTEGER"/>
+        <result column="bed_num" property="bedNum" jdbcType="INTEGER"/>
+        <result column="bed_size" property="bedSize" jdbcType="VARCHAR"/>
+        <result column="window" property="window" jdbcType="INTEGER"/>
+        <result column="rest" property="rest" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    type_id, type_name, price, area, bed_num, bed_size, window, rest
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from room_type
+        where type_id = #{typeId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from room_type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insertSelective" parameterType="com.example.hotel.modular.hotel.model.RoomType">
+        insert into room_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeId != null">
+                type_id,
+            </if>
+            <if test="typeName != null">
+                type_name,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="area != null">
+                area,
+            </if>
+            <if test="bedNum != null">
+                bed_num,
+            </if>
+            <if test="bedSize != null">
+                bed_size,
+            </if>
+            <if test="window != null">
+                window,
+            </if>
+            <if test="rest != null">
+                rest,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeId != null">
+                #{typeId,jdbcType=INTEGER},
+            </if>
+            <if test="typeName != null">
+                #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="area != null">
+                #{area,jdbcType=INTEGER},
+            </if>
+            <if test="bedNum != null">
+                #{bedNum,jdbcType=INTEGER},
+            </if>
+            <if test="bedSize != null">
+                #{bedSize,jdbcType=VARCHAR},
+            </if>
+            <if test="window != null">
+                #{window,jdbcType=INTEGER},
+            </if>
+            <if test="rest != null">
+                #{rest,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.hotel.modular.hotel.model.RoomType">
+        update room_type
+        <set>
+            <if test="typeName != null">
+                type_name = #{typeName,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="area != null">
+                area = #{area,jdbcType=INTEGER},
+            </if>
+            <if test="bedNum != null">
+                bed_num = #{bedNum,jdbcType=INTEGER},
+            </if>
+            <if test="bedSize != null">
+                bed_size = #{bedSize,jdbcType=VARCHAR},
+            </if>
+            <if test="window != null">
+                window = #{window,jdbcType=INTEGER},
+            </if>
+            <if test="rest != null">
+                rest = #{rest,jdbcType=INTEGER},
+            </if>
+        </set>
+        where type_id = #{typeId,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectRoomTypeList" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from room_type
+        <if test="start!=null and size!=null">
+            limit #{start}, #{size}
+        </if>
+    </select>
+    <select id="getTotalRoomType" resultType="java.lang.Integer" parameterType="Map">
+    select count(*) from room_type
+  </select>
+
+</mapper>
