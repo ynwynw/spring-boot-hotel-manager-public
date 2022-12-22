@@ -2,6 +2,12 @@
 
 **需要完整代码可以加qq  931708230 或者加微信  ynwwxid**
 
+**如果图片加载不出来可以去博客看介绍
+[https://blog.csdn.net/weixin_43927649/article/details/126008685](https://blog.csdn.net/weixin_43927649/article/details/126008685)**
+
+**毕业设计所有选题地址
+[https://github.com/ynwynw/allProject](https://github.com/ynwynw/allProject)**
+
 基于springboot的酒店预订管理系统，java项目
 主要技术：springboot，java，mysql，mybatis
 推荐环境配置：idea jdk1.8 maven3.6 mysql（需要远程可私聊）
@@ -27,7 +33,6 @@
 
 运行截图
 
-![contents](./picture/picture1.png)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/16060b3283434e6d82361cc8e9603682.png#pic_center)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/1448e24bf6374f5d87ef1f3e70b9c1b7.png#pic_center)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/ccb30b9af7a84205988c694ddfbc9d59.png#pic_center)
